@@ -28,7 +28,7 @@ export function New() {
       }
 
       await api.post('/habits', { title, weekDays })
-
+      
       setTitle('');
       setWeekDays([]);
 
@@ -46,12 +46,15 @@ export function New() {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <BackButton />
+
         <Text className="mt-6 text-white font-extrabold text-3xl">
           Criar hábito
         </Text>
+
         <Text className="mt-6 text-white font-semibold text-base">
           Qual seu comprometimento?
         </Text>
+
         <TextInput 
           className="h-12 pl-4 rounded-lg mt-3 bg-zinc-900 text-white border-2 border-zinc-800 focus:border-green-600"
           placeholder="Exercícios, dormir bem, etc..."
@@ -63,6 +66,7 @@ export function New() {
         <Text className="font-semibold mt-4 mb-3 text-white text-base">
           Qual a recorrência?
         </Text>
+
         {
           availableWeekDays.map((weekDay, index) => (
             <Checkbox
@@ -73,6 +77,7 @@ export function New() {
             />
           ))
         }
+
         <TouchableOpacity
           className="w-full h-14 flex-row items-center justify-center bg-green-600 rounded-md mt-6"
           activeOpacity={0.7}
@@ -83,6 +88,7 @@ export function New() {
            size={20}
            color={colors.white}
           />
+
           <Text className="font-semibold text-base text-white ml-2">
             Confirmar
           </Text>

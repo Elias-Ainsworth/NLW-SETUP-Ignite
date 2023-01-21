@@ -1,33 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Text, View, ScrollView, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { api } from '../lib/axios';
 import { generateRangeDatesFromYearStart } from '../utils/generate-range-between-dates';
-
 import { Header } from '../components/Header';
 import { Loading } from '../components/Loading';
 import { HabitDay, DAY_SIZE } from '../components/HabitDay';
 import dayjs from 'dayjs';
-
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 const datesFromYearStart = generateRangeDatesFromYearStart();
 const minimunSummaryDatesSizes = 18 * 5;
 const amountOfDaysToFill = minimunSummaryDatesSizes - datesFromYearStart.length
-
 type SummaryProps = Array<{
   id: string;
   date: string;
   amount: number;
   completed: number;
 }>
-
 export function Home() {
   const [loading, setLoading] = useState(true)
   const [summary, setSummary] = useState<SummaryProps | null>(null)
-
   const { navigate } = useNavigation()
-
   async function fetchData() {
     try {
       setLoading(true)
@@ -41,16 +35,15 @@ export function Home() {
     }
   }
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+  useFocusEffect(useCallback(() => {
+      fetchData()
+    }, []))
 
   if (loading) {
     return (
       <Loading />
     )
   }
-
   return (
     <View className='flex-1 bg-background px-8 pt-16'>
       <Header />
@@ -79,7 +72,6 @@ export function Home() {
                   const dayWithHabits = summary.find(day => {
                     return dayjs(date).isSame(day.date, 'day')
                   })
-
                   return (
                     <HabitDay 
                       key={date.toISOString()}
@@ -91,7 +83,6 @@ export function Home() {
                   )
                 })
               }
-
               {
                 amountOfDaysToFill > 0 && Array
                 .from({ length: amountOfDaysToFill })
@@ -107,7 +98,6 @@ export function Home() {
           )
         }
       </ScrollView>
-
     </View>
   )
 } 
